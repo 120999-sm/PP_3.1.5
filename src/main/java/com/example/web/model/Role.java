@@ -1,10 +1,10 @@
 package com.example.web.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.List;
-
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
@@ -13,19 +13,20 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "role")
+
+    @Column(name = "name" , unique = true)
     private String role;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "roles_id"),
-            inverseJoinColumns = @JoinColumn(name = "users_id"))
+
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private List<User> users;
+
+    public Role() {
+    }
+
 
     public Role(String role) {
         this.role = role;
-    }
-
-    public Role() {
     }
 
     public Long getId() {
@@ -53,16 +54,12 @@ public class Role implements GrantedAuthority {
     }
 
     @Override
-    public String toString() {
+    public String getAuthority() {
         return role;
     }
 
     @Override
-    public String getAuthority() {
-        return getRole();
-    }
-
-    public String getShortName() {
-        return role.replace("ROLE_", "");
+    public String toString() {
+        return role;
     }
 }

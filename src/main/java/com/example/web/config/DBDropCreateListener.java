@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class DBDropCreateListener implements ApplicationListener<ContextClosedEvent> {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+    public DBDropCreateListener(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
-        jdbcTemplate.execute("DROP DATABASE my_schema");
-        jdbcTemplate.execute("CREATE DATABASE my_schema");
+        jdbcTemplate.execute("DROP DATABASE my_db");
+        jdbcTemplate.execute("CREATE DATABASE my_db");
     }
 }

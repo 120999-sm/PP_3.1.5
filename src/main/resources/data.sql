@@ -1,8 +1,8 @@
 insert into roles (role) value ('ROLE_ADMIN');
 insert into roles (role) value ('ROLE_USER');
 
-insert into users (email, first_name, last_name, password, user_name) VALUES ('admin@admin.com','admin', 'admin', 'admin', 'admin' );
-insert into user_roles (users_id, roles_id) VALUES (1,1);
+insert into users (username, last_name, age,email, password) VALUES ('admin', 'admin', 11 ,'admin@admin.com', 'admin');
+insert into users_roles (user_id, role_id) VALUES (1,1);
 
-insert into users (email, first_name, last_name, password, user_name) VALUES ('user@user.com','user', 'user', 'user', 'user' );
-insert into user_roles (users_id, roles_id) VALUES (2,2);
+insert into users (username, last_name, age,email, password) VALUES ('user', 'user', 10 ,'user@user.com', 'user');
+insert into users_roles (user_id, role_id) VALUES (2,2);

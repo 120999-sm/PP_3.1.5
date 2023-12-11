@@ -1,12 +1,7 @@
 package com.example.web.repository;
 
 import com.example.web.model.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface RoleRepository {
-    List<Role> getAllRoles();
-     Role getRoleForName(String name);
-     Role getRoleById(Long id);
-
+public interface RoleRepository extends JpaRepository<Role, Long> {
 }
