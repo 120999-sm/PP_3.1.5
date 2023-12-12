@@ -1,26 +1,29 @@
-const url = "http://localhost:8080/api/user/"
+showUserInfo();
 
-console.log("")
+function showUserInfo() {
+    fetch('http://localhost:8080/api/user/')
+        .then(response => response.json())
+        .then((user) => {
+            let tBody = document.getElementById("tableUser");
+            tBody.innerHTML = "";
+                let roles = ''
+                user.authorities.forEach(name => {
+                        roles += ' '
+                        roles += name.role.replace("ROLE_", "")
+                })
 
-currentUser = fetch(url).then((response) => response.json())
-
-// Таблица
-currentUser.then((user) =>{
-    const role = user.authorities[0].name.toString().replace("ROLE_","");
-    let result = "";
-    result += `<tr>
-                    <td>${user.id}</td>
-                    <td>${user.username}</td>
-                    <td>${user.lastName}</td>
-                    <td>${user.age}</td>
-                    <td>${user.email}</td>
-                    <td>${role}</td>
-                   </tr>`;
-    let navbar = `<b> <span>${user.email}</span></b>
-                            <span>with roles:</span>
-                            <span>${role}</span>`;
-    document.getElementById("tableUser").innerHTML = result;
-    document.getElementById("navbarBrand").innerHTML = navbar;
-})
-
-
+            let row = tBody.insertRow(0);
+            let cell0 = row.insertCell(0);
+            cell0.innerHTML = user.id;
+            let cell1 = row.insertCell(1);
+            cell1.innerHTML = user.username;
+            let cell2 = row.insertCell(2);
+            cell2.innerHTML = user.lastName;
+            let cell3 = row.insertCell(3);
+            cell3.innerHTML = user.age;
+            let cell4 = row.insertCell(4);
+            cell4.innerHTML = user.email;
+            let cell5 = row.insertCell(5);
+            cell5.innerHTML = roles;
+        });
+}

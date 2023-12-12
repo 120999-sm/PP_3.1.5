@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -22,28 +23,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.successUserHandler = successUserHandler;
         this.userService = userService;
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/auth/login").permitAll()
-                .antMatchers("/",  "/index").permitAll()
-                .antMatchers("/api/admin/**").permitAll()//hasRole("ADMIN")
-                .antMatchers("/api/user/**").permitAll()//hasAnyRole("ADMIN", "USER")
+                .csrf().disable().authorizeRequests()
+                .antMatchers("/api/user/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/auth/login")
-                .loginProcessingUrl("/login")
-                .successHandler(successUserHandler)
+                .formLogin().successHandler(successUserHandler)
                 .permitAll()
                 .and()
-                .logout()
-                .permitAll();
+                .logout((logout) -> logout
+                        .logoutUrl("/logout")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                        .logoutSuccessUrl("/login")
+                        .permitAll());
     }
 
-    // аутентификация inMemory
+
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
