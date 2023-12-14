@@ -6,13 +6,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
+import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends JpaRepository<User,Long> {
-    @Override
-    Optional<User> findById(Long id);
 
-    @Query("Select u from User u left join fetch u.roles where u.username=:username")
+public interface UserRepository  {
+    List<User> allUsers();
+
+    void add(User user);
+
+    void remove(User user);
+
+    void edit(User user);
+
+    User getById(long id);
+
     User findByUsername(String username);
 }
