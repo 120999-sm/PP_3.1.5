@@ -5,6 +5,7 @@ import com.example.web.repository.RoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Collection;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class RoleServiceImp implements RoleService{
+public class RoleServiceImp implements RoleService {
 
     private RoleRepository roleRepository;
 

@@ -7,8 +7,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
+
     List<User> allUsers();
 
     void add(User user);

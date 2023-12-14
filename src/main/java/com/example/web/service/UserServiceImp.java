@@ -5,6 +5,7 @@ import com.example.web.model.User;
 import com.example.web.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,25 +15,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
-public class UserServiceImpl implements UserService {
+@Transactional
+public class UserServiceImp implements UserService {
 
    private final UserRepository userRepository;
    private final RoleService roleService;
+
+
+   @Autowired
+   public UserServiceImp(UserRepository userRepository, RoleService roleService) {
+      this.userRepository = userRepository;
+      this.roleService = roleService;
+   }
 
    @Override
    public List<User> allUsers() {
       return userRepository.allUsers();
    }
 
-   @org.springframework.transaction.annotation.Transactional
+   @Transactional
    @Override
    public void add(User user) {
       user.setRoles(user.getRoles().stream()
@@ -43,7 +52,7 @@ public class UserServiceImpl implements UserService {
       userRepository.add(user);
    }
 
-   @org.springframework.transaction.annotation.Transactional
+   @Transactional
    @Override
    public void remove(long id) {
       userRepository.remove(userRepository.getById(id));

@@ -18,4 +18,9 @@ public class ViewControllers {
     public String login() {
         return "login";
     }
+
+    @RequestMapping()
+    public String loginPage() {
+        return "login";
+    }
 }

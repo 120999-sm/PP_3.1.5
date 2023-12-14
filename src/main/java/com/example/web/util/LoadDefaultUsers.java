@@ -51,7 +51,6 @@ public class LoadDefaultUsers {
             user.setPassword("user");
             user.setRoles(role_us);
             userService.add(user); // Login: user; Password: user
-
         }
     }
 }

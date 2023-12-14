@@ -11,6 +11,7 @@ import java.util.Optional;
 
 
 public interface UserRepository  {
+
     List<User> allUsers();
 
     void add(User user);

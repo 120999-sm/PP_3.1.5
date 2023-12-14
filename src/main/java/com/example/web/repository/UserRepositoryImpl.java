@@ -17,6 +17,7 @@ public class UserRepositoryImpl implements UserRepository {
         return entityManager.createQuery("from User", User.class).getResultList();
     }
 
+
     @Override
     public void add(User user) {
         entityManager.persist(user);

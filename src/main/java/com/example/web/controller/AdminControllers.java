@@ -31,7 +31,11 @@ public class AdminControllers {
 
     @GetMapping("/getAllRoles")
     public ResponseEntity<Iterable<Role>> getAllRoles() {
-        return ResponseEntity.ok().body(roleService.allRoles());
+        final List<Role> roleList = (List<Role>) roleService.allRoles();
+
+        return roleList != null && !roleList.isEmpty()
+                ? new ResponseEntity<>(roleList, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/userById/{id}")
@@ -46,13 +50,13 @@ public class AdminControllers {
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         userService.add(user);
-        return ResponseEntity.ok().body(user);
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.edit(user);
-        return ResponseEntity.ok().body(user);
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
