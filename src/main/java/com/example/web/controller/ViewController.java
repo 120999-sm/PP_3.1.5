@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @AllArgsConstructor
-public class ViewControllers {
+public class ViewController {
 
     @GetMapping("/mainPage")
     public String currentUser() {

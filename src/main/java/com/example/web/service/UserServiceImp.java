@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.hibernate.annotations.QueryHints.READ_ONLY;
+
 @Service
 @Transactional
 public class UserServiceImp implements UserService {
@@ -37,11 +39,12 @@ public class UserServiceImp implements UserService {
    }
 
    @Override
+   @Transactional(READ_ONLY)
    public List<User> allUsers() {
       return userRepository.findAll();
    }
 
-   @Transactional
+
    @Override
    public void add(User user) {
       user.setRoles(user.getRoles().stream()
@@ -52,13 +55,11 @@ public class UserServiceImp implements UserService {
       userRepository.save(user);
    }
 
-   @Transactional
    @Override
    public void remove(long id) {
       userRepository.delete(userRepository.getById(id));
    }
 
-   @Transactional
    @Override
    public void edit(User user) {
       user.setRoles(user.getRoles().stream()
@@ -70,17 +71,20 @@ public class UserServiceImp implements UserService {
    }
 
    @Override
+   @Transactional(READ_ONLY)
    public User getById(long id) {
       Optional<User> user = userRepository.findById(id);
       return user.orElse(null);
    }
 
    @Override
+   @Transactional(READ_ONLY)
    public User findByUsername(String userName) {
       return userRepository.findByUsername(userName);
    }
 
    @Override
+   @Transactional(READ_ONLY)
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
       User user = userRepository.findByUsername(username);
       if (user == null) {

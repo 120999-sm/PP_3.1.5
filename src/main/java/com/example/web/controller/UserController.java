@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/admin")
-public class AdminControllers {
+public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
@@ -41,7 +41,6 @@ public class AdminControllers {
     @GetMapping("/userById/{id}")
     public ResponseEntity<User> getUserFromID(@PathVariable long id) {
         final User userDto = userService.getById(id);
-
         return userDto != null
                 ? new ResponseEntity<>(userDto, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
