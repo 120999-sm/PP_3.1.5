@@ -38,7 +38,7 @@ public class UserServiceImp implements UserService {
 
    @Override
    public List<User> allUsers() {
-      return userRepository.allUsers();
+      return userRepository.findAll();
    }
 
    @Transactional
@@ -49,13 +49,13 @@ public class UserServiceImp implements UserService {
               .filter(Optional::isPresent)
               .map(Optional::get)
               .collect(Collectors.toList()));
-      userRepository.add(user);
+      userRepository.save(user);
    }
 
    @Transactional
    @Override
    public void remove(long id) {
-      userRepository.remove(userRepository.getById(id));
+      userRepository.delete(userRepository.getById(id));
    }
 
    @Transactional
@@ -66,12 +66,13 @@ public class UserServiceImp implements UserService {
               .filter(Optional::isPresent)
               .map(Optional::get)
               .collect(Collectors.toList()));
-      userRepository.edit(user);
+      userRepository.save(user);
    }
 
    @Override
    public User getById(long id) {
-      return userRepository.getById(id);
+      Optional<User> user = userRepository.findById(id);
+      return user.orElse(null);
    }
 
    @Override
