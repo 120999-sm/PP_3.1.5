@@ -5,6 +5,7 @@ import com.example.web.model.User;
 import com.example.web.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,17 +30,15 @@ import static org.hibernate.annotations.QueryHints.READ_ONLY;
 public class UserServiceImp implements UserService {
 
    private final UserRepository userRepository;
-   private final RoleService roleService;
 
 
    @Autowired
-   public UserServiceImp(UserRepository userRepository, RoleService roleService) {
+   public UserServiceImp(UserRepository userRepository) {
       this.userRepository = userRepository;
-      this.roleService = roleService;
    }
 
    @Override
-   @Transactional(READ_ONLY)
+   @Transactional(readOnly = true)
    public List<User> allUsers() {
       return userRepository.findAll();
    }
@@ -47,11 +46,6 @@ public class UserServiceImp implements UserService {
 
    @Override
    public void add(User user) {
-      user.setRoles(user.getRoles().stream()
-              .map(r -> roleService.findByName(r.getName()))
-              .filter(Optional::isPresent)
-              .map(Optional::get)
-              .collect(Collectors.toList()));
       userRepository.save(user);
    }
 
@@ -62,35 +56,30 @@ public class UserServiceImp implements UserService {
 
    @Override
    public void edit(User user) {
-      user.setRoles(user.getRoles().stream()
-              .map(r -> roleService.findByName(r.getName()))
-              .filter(Optional::isPresent)
-              .map(Optional::get)
-              .collect(Collectors.toList()));
       userRepository.save(user);
    }
 
    @Override
-   @Transactional(READ_ONLY)
+   @Transactional(readOnly = true)
    public User getById(long id) {
-      Optional<User> user = userRepository.findById(id);
-      return user.orElse(null);
+       return userRepository.getById(id);
    }
 
    @Override
-   @Transactional(READ_ONLY)
+   @Transactional(readOnly = true)
    public User findByUsername(String userName) {
-      return userRepository.findByUsername(userName);
+       return userRepository.findByUsername(userName);
    }
 
    @Override
-   @Transactional(READ_ONLY)
+   @Transactional(readOnly = true
+   )
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
       User user = userRepository.findByUsername(username);
       if (user == null) {
          throw new UsernameNotFoundException("User not found");
       }
-      return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+      return user;
    }
 
    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -31,10 +32,9 @@ public class UserController {
 
     @GetMapping("/getAllRoles")
     public ResponseEntity<Iterable<Role>> getAllRoles() {
-        final List<Role> roleList = (List<Role>) roleService.allRoles();
-
+        Set<Role> roleList = roleService.allRoles();
         return roleList != null && !roleList.isEmpty()
-                ? new ResponseEntity<>(roleList, HttpStatus.OK)
+                ? new ResponseEntity<>(roleList.stream().toList(), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

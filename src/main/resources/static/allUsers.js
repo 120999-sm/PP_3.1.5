@@ -1,7 +1,7 @@
 function showAllUsers() {
     let tBody = document.getElementById("tBody");
     tBody.innerHTML = "";
-    fetch('http://localhost:8080/admin/allUsers')
+    fetch('http://localhost:90/admin/allUsers')
         .then(response => response.json())
         .then(users => {
             users.forEach(function (user) {

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -19,12 +17,10 @@ public class RoleServiceImp implements RoleService {
     private RoleRepository roleRepository;
 
     @Override
-    public Collection<Role> allRoles() {
-        return roleRepository.findAll();
+    public Set<Role> allRoles() {
+        List<Role> list = roleRepository.findAll();
+        return new HashSet<>(list);
     }
 
-    @Override
-    public Optional<Role> findByName(String name) {
-        return Optional.ofNullable(roleRepository.findByName(name));
-    }
+
 }

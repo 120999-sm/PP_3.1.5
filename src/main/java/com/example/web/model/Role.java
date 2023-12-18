@@ -1,6 +1,6 @@
 package com.example.web.model;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,9 +14,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Role implements GrantedAuthority {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +26,19 @@ public class Role implements GrantedAuthority {
     public Role(String name) {
         this.name = name;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+//    @JsonIgnore
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+//    @JoinTable(name = "user_roles",
+//            joinColumns = @JoinColumn(name = "role_id"),
+//            inverseJoinColumns = @JoinColumn(name = "users_id"))
+//    private List<User> users;
+
 
     @Override
     public String getAuthority() {
@@ -45,12 +58,4 @@ public class Role implements GrantedAuthority {
         return Objects.equals(id, role.id) && Objects.equals(name, role.name);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName());
-    }
-
-    public String getShortName() {
-        return name.replace("ROLE_", "");
-    }
 }
